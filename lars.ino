@@ -200,17 +200,13 @@ void checkParam() { // constrain param choice to known possible params
   if (paramNum < 1) paramNum = 511;
   else if ((paramNum > 251) && (paramNum < 258)) paramNum = 260;
   else if ((paramNum < 260) && (paramNum > 253)) paramNum = 251;
-
   else if ((paramNum > 397) && (paramNum < 399)) paramNum = 400;
   else if ((paramNum < 400) && (paramNum > 398)) paramNum = 397;
-
   else if ((paramNum > 415) && (paramNum < 426)) paramNum = 428;
   else if ((paramNum < 428) && (paramNum > 417)) paramNum = 415;
-
   else if ((paramNum > 454) && (paramNum < 506)) paramNum = 508;
   else if ((paramNum < 508) && (paramNum > 456)) paramNum = 454;
-  
-  else if (paramNum > 511) paramNum = 1;
+    else if (paramNum > 511) paramNum = 1;
 }
 
 void checkValue() { // constrain all params to known possible values
