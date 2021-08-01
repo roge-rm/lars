@@ -26,9 +26,10 @@ EncButton <EB_TICK, 13> bbtn5;
 EncButton <EB_TICK, 12> bbtn6;
 
 // initialize global variables
-int patchNum = 0;
-int paramNum[4] = {1, 2, 3, 4};
-int paramValue[4] = {1, 2, 3, 4};
+int patchNum = 0; // patch number
+int paramNum[4] = {1, 2, 3, 4}; // parameter numbers of the 4 values shown on screen
+int paramValue[4] = {1, 2, 3, 4}; // parameter values currently shown on screen
+int previousValue[4] = {0, 0, 0, 0}; // allow to reset parameter to previous value
 int midiChan = 6; // what MIDI channel USB MIDI will respond to
 
 int presetType = 0; // 0-Oscillators,1-Filters,2-Modulation,3-Effects,4-Global Param,5-MIDI Modulation
@@ -80,6 +81,9 @@ void loop() {
   else if (enc1.isRightH()) {
     changeValue(0, 11);
   }
+  else if (enc1.isClick()) {
+    changeValue(0, 12);
+  }
 
   if (enc2.isLeft()) {
     changeValue(1, 0);
@@ -93,7 +97,9 @@ void loop() {
   else if (enc2.isRightH()) {
     changeValue(1, 11);
   }
-
+  else if (enc2.isClick()) {
+    changeValue(1, 12);
+  }
 
   if (enc3.isLeft()) {
     changeValue(2, 0);
@@ -107,6 +113,9 @@ void loop() {
   else if (enc3.isRightH()) {
     changeValue(2, 11);
   }
+  else if (enc3.isClick()) {
+    changeValue(2, 12);
+  }
 
   if (enc4.isLeft()) {
     changeValue(3, 0);
@@ -119,6 +128,9 @@ void loop() {
   }
   else if (enc4.isRightH()) {
     changeValue(3, 11);
+  }
+    else if (enc4.isClick()) {
+    changeValue(3, 12);
   }
 
   // top row button handling
@@ -183,7 +195,7 @@ void loop() {
   else if (bbtn2.isPress()) {
     if (presetType == 1) {
       presetNum[1]++;
-      if (presetNum[1] > 10) presetNum[1] = 0;
+      if (presetNum[1] > 6) presetNum[1] = 0;
     } else presetType = 1;
     changePreset();
   }

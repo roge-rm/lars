@@ -623,6 +623,9 @@ void changeValue(int pNum, int pDir) { // inputs are parameter number and direct
       case 11:
         paramValue[pNum] += 10;
         break;
+      case 12:
+        paramValue[pNum] = previousValue[pNum];
+        break;
     }
 
     paramValue[pNum] = checkValue(paramNum[pNum], paramValue[pNum]); // verify parameter value is valid

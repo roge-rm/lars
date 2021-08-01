@@ -7,6 +7,7 @@ void displayStatus(int i) {
     case 1:
       for (int i = 0; i < 4; i++) {
         paramValue[i] = getParam(paramNum[i]);
+        previousValue[i] =  paramValue[i];
       }
       for (int i = 0; i < 10; i++) {
         clearText(i);
@@ -19,6 +20,7 @@ void displayStatus(int i) {
       clearText(1);
       for (int i = 0; i < 4; i++) {
         paramValue[i] = getParam(paramNum[i]);
+        previousValue[i] =  paramValue[i];
       }
       displayText(0);
       for (int i = 1; i < 10; i += 2) {
@@ -35,6 +37,7 @@ void displayStatus(int i) {
     case 4:
       for (int i = 0; i < 4; i++) {
         paramValue[i] = getParam(paramNum[i]);
+        previousValue[i] =  paramValue[i];
       }
       for (int i = 2; i < 10; i++) {
         clearText(i);
