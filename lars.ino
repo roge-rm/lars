@@ -169,7 +169,6 @@ void loop() {
     doSleep = 0;
     display.clearDisplay();
     display.display();
-
   }
 
   usbMIDI.read(midiChan);
