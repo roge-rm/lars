@@ -1,4 +1,7 @@
+// EncButton, https://github.com/GyverLibs/EncButton
 #include <EncButton.h>
+// Minimal Timeout, https://github.com/tfeldmann/Arduino-Timeout
+#include <timeout.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
@@ -38,6 +41,11 @@ int presetNum[15] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // see spreadsheet 
 
 bool doPreset = 0; // indicate preset change needed
 bool doEG = 0; // enable graphic mode
+
+bool butState[18];
+bool doSleep = 0; // control screen timeout (to save the OLED from burn in)
+Timeout timeout;
+long timeOutTime = 600000; // time until screen timeout, in ms - set to 5 min
 
 bool bitEdit = 0; // editing bitwise values is handled differently
 int bitNum = 0; // track which bitwiser number is being edited - see spreadsheet
@@ -122,6 +130,10 @@ void setup() {
   display.clearDisplay();
   display.display();
 
+  for (int i = 0; i < 18; i++) {
+    butState[i] = 0;
+  }
+
   //  Serial.begin(9600); // for monitoring purposes
   Serial1.begin(500000); // connection to XVA1 requires 500kbps
 
@@ -134,6 +146,9 @@ void setup() {
   displayStatus(0);
   delay(500);
   displayText(100);
+
+  doSleep = 0;
+  timeout.start(timeOutTime);
 }
 
 
@@ -145,8 +160,17 @@ void loop() {
   doBotButtons(); // bottom row button handling
   doScrButtons(); // handle buttons around screen (not encoders)
 
-  if (doPreset) changePreset();
-  if (doEG) displayADSR();
+  if (!doSleep) {
+    if (doPreset) changePreset();
+    if (doEG) displayADSR();
+  }
+
+  if (timeout.time_over()) {
+    doSleep = 0;
+    display.clearDisplay();
+    display.display();
+
+  }
 
   usbMIDI.read(midiChan);
 }

@@ -342,22 +342,149 @@ void doScrButtons() { // handle buttons around screen (not encoders)
 }
 
 void encUpdate() { // pulls values from encoders/buttons, needs to be run as often as possible
+  int i;
+
   enc1.tick();
+  i = enc1.state();
+  if (butState[0] != i) {
+    butState[0] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   enc2.tick();
+  i = enc2.state();
+  if (butState[1] != i) {
+    butState[1] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   enc3.tick();
+  i = enc3.state();
+  if (butState[2] != i) {
+    butState[2] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   enc4.tick();
+  i = enc4.state();
+  if (butState[3] != i) {
+    butState[3] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   sbtn1.tick();
+  i = sbtn1.state();
+  if (butState[4] != i) {
+    butState[4] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   sbtn2.tick();
+  i = sbtn2.state();
+  if (butState[5] != i) {
+    butState[5] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   sbtn3.tick();
+  i = sbtn3.state();
+  if (butState[6] != i) {
+    butState[6] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   sbtn4.tick();
+  i = sbtn4.state();
+  if (butState[7] != i) {
+    butState[7] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   tbtn1.tick();
+  i = tbtn1.state();
+  if (butState[8] != i) {
+    butState[8] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   tbtn2.tick();
+  i = tbtn2.state();
+  if (butState[9] != i) {
+    butState[9] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   tbtn3.tick();
+  i = tbtn3.state();
+  if (butState[10] != i) {
+    butState[10] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   tbtn4.tick();
+  i = tbtn4.state();
+  if (butState[11] != i) {
+    butState[11] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   bbtn1.tick();
+  i = bbtn1.state();
+  if (butState[12] != i) {
+    butState[12] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   bbtn2.tick();
+  i = bbtn2.state();
+  if (butState[13] != i) {
+    butState[13] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   bbtn3.tick();
+  i = bbtn3.state();
+  if (butState[14] != i) {
+    butState[14] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   bbtn4.tick();
+  i = bbtn4.state();
+  if (butState[15] != i) {
+    butState[15] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   bbtn5.tick();
+  i = bbtn5.state();
+  if (butState[16] != i) {
+    butState[16] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
+
   bbtn6.tick();
+  i = bbtn6.state();
+  if (butState[17] != i) {
+    butState[17] = i;
+    doSleep = 0;
+    timeout.start(timeOutTime);
+  }
 }

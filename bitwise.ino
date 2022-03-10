@@ -1,4 +1,6 @@
+/////////////////////////////
 /* Bitwise value operators */
+/////////////////////////////
 
 void readBits() { // read bit values for bitwise-stored variables
   int bParam = 0;
