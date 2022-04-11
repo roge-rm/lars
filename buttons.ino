@@ -52,48 +52,22 @@ void doEncButtons() { // encoder/button press handling
 }
 
 void doTopButtons() { // top row button handling
-  if (tbtn1.isClick()) { // decrease patch number
-    if (presetType != 3) {
-      patchNum--;
-      if (patchNum < 0) patchNum = 127;
-      loadPatch();
-      displayStatus(2);
-    }
-    else {
+  if (tbtn1.isClick()) { // switch between level and time edit when editing EG
+    if (presetType == 3) {
       levelEG = !levelEG;
       doPreset = true;
     }
   }
-  else if (tbtn1.isHold()) { // hold button to decrease patch number
-    if (presetType != 3) {
-      patchNum -= 1;
-      if (patchNum < 0) patchNum = 127;
-      loadPatch();
-      displayStatus(2);
-    }
+  else if (tbtn2.isClick()) { // bring up patch change selector
+    changePatch();
+
+    delay(10);
+    if (presetType != 3) displayStatus(1);
   }
-  else if (tbtn2.isClick()) { // increase patch number - use a double click to prevent accidental patch change/loss of current patch
-    if (presetType != 3) {
-      patchNum++;
-      if (patchNum > 127) patchNum = 0;
-      loadPatch();
-      displayStatus(2);
-    }
+
+  else if (tbtn3.isClick()) {
   }
-  else if (tbtn2.isHold()) { // hold button to increase patch number
-    if (presetType != 3) {
-      patchNum += 1;
-      if (patchNum > 127) patchNum = 0;
-      loadPatch();
-      displayStatus(2);
-    }
-  }
-  else if (tbtn3.isPress()) { // switch between level and time edit when editing EG
-    if (presetType == 3) { // only when in EG mode
-      levelEG = !levelEG;
-      doPreset = true;
-    }
-  }
+
   else if (tbtn3.isHold()) { // load patch from EEPROM
     loadPatch();
     clearText(0);
@@ -131,14 +105,6 @@ void doBotButtons() { // bottom row button handling
     doPreset = true;
     doClear();
   }
-  else if (bbtn1.hasClicks(2)) {
-    if (presetType == 0) {
-      presetNum[0]--;
-      if (presetNum[0] < 0) presetNum[0] = 21;
-    } else presetType = 0;
-    doPreset = true;
-    doClear();
-  }
   else if (bbtn1.isHold()) {
     presetType = 0;
     presetNum[0] = 0;
@@ -150,14 +116,6 @@ void doBotButtons() { // bottom row button handling
     if (presetType == 1) {
       presetNum[1]++;
       if (presetNum[1] > 3) presetNum[1] = 0;
-    } else presetType = 1;
-    doPreset = true;
-    doClear();
-  }
-  else if (bbtn2.hasClicks(2)) {
-    if (presetType == 1) {
-      presetNum[1]--;
-      if (presetNum[1] < 0) presetNum[1] = 3;
     } else presetType = 1;
     doPreset = true;
     doClear();
@@ -177,14 +135,6 @@ void doBotButtons() { // bottom row button handling
     doPreset = true;
     doClear();
   }
-  else if (bbtn3.hasClicks(2)) {
-    if (presetType == 2) {
-      presetNum[2]--;
-      if (presetNum[2] < 0) presetNum[2] = 12;
-    } else presetType = 2;
-    doPreset = true;
-    doClear();
-  }
   else if (bbtn3.isHold()) {
     presetType = 2;
     presetNum[2] = 0;
@@ -199,13 +149,6 @@ void doBotButtons() { // bottom row button handling
     } else presetType = 3;
     doPreset = true;
   }
-  else if (bbtn4.hasClicks(2)) {
-    if (presetType == 3) {
-      presetNum[3]--;
-      if (presetNum[3] < 0) presetNum[3] = 6;
-    } else presetType = 3;
-    doPreset = true;
-  }
   else if (bbtn4.isHold()) {
     presetType = 3;
     presetNum[3] = 0;
@@ -216,15 +159,7 @@ void doBotButtons() { // bottom row button handling
   else if (bbtn5.isPress()) {
     if (presetType == 4) {
       presetNum[4]++;
-      if (presetNum[4] > 18) presetNum[4] = 0;
-    } else presetType = 4;
-    doPreset = true;
-    doClear();
-  }
-  else if (bbtn5.hasClicks(2)) {
-    if (presetType == 4) {
-      presetNum[4]--;
-      if (presetNum[4] < 0) presetNum[4] = 18;
+      if (presetNum[4] > 16) presetNum[4] = 0;
     } else presetType = 4;
     doPreset = true;
     doClear();
@@ -239,15 +174,7 @@ void doBotButtons() { // bottom row button handling
   else if (bbtn6.isPress()) {
     if (presetType == 5) {
       presetNum[5]++;
-      if (presetNum[5] > 5) presetNum[5] = 0;
-    } else presetType = 5;
-    doPreset = true;
-    doClear();
-  }
-  else if (bbtn6.hasClicks(2)) {
-    if (presetType == 5) {
-      presetNum[5]--;
-      if (presetNum[5] < 0) presetNum[5] = 5;
+      if (presetNum[5] > 4) presetNum[5] = 0;
     } else presetType = 5;
     doPreset = true;
     doClear();

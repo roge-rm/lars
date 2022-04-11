@@ -39,12 +39,13 @@ int midiPort = 0; // what MIDI channel the XVA1 will respond to (default is 0/om
 int presetType = 0; // 0-Oscillators,1-Filters,2-Modulation,3-Effects,4-Global Param,5-MIDI Modulation
 int presetNum[15] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // see spreadsheet for breakdown
 
-bool doPreset = 0; // indicate preset change needed
+bool doPreset = 1; // indicate preset change needed
 bool doEG = 0; // enable graphic mode
+bool patchModify = 0; // used to confirm patch change once modificatons are made
 
 bool butState[18];
 bool doSleep = 0; // control screen timeout (to save the OLED from burn in)
-Timeout timeout;
+Timeout timeout; // initiate Timeout instance named timeout
 long timeOutTime = 600000; // time until screen timeout, in ms - set to 5 min
 
 bool bitEdit = 0; // editing bitwise values is handled differently
@@ -58,44 +59,8 @@ bool stateChange = 1; // used to confirm display clear to prevent flickering/exc
 float egDLY, egL0, egL1, egL2, egL3, egL4, egL5, egR1, egR2, egR3, egR4, egR5;
 int eg0x, eg0y, eg1x, eg1y, eg2x, eg2y, eg3x, eg3y, eg4x, eg4y, eg5x, eg5y, eg6x, eg6y;
 
-// store menu headings in char arrays
-char menu0Names[22][13] = {"OSC ON/OFF", " WAVEFORM", "PULSE WIDTH", "SAWSTACK DET", "   SYNC", "   PHASE", "   MODE", " TRANSPOSE", "  DETUNE", "  DRIFT", "  LEVEL", " LEVEL L", " LEVEL R", " VELO SENS", "  KEY BP", "KEY LDEPTH", "KEY RDEPTH", "KEY LCURVE", "KEY RCURVE", " PM SENS", " AM SENS", " RING MOD"};
-char menu1Names[4][13] = {"  FILTER", "CUTOFF/RESO", "TRACK/RESO", " ENV GEN"};
-char menu2Names[13][13] = {"LFO1 MOD1", "LFO1 MOD2", "LFO2 MOD1", "LFO2 MOD2", "LFO AFTER", "LFO WHEEL", "LFO BREATH", "LFO FOOT", "MIDI AFTER", "MIDI BREATH", "MIDI RND/WHL", "MIDI FOOT", "MIDI TEMP"};
-char menu3Names[7][13] = {"", "", "", " EG LOOP", "EG LOOP SEG", "EG RESTART", "  PITCH"};
-char menu4Names[19][15] = {"BW & ROUTING", "  DISTORT", "DISTORT GAIN", "CRUSH/DECIM", "FILTER CUTOFF", "CHORUS/FLANGER", "CHORUS/FLANGER", " PHASER 1", " PHASER 2", "  AMP MOD", "  DELAY 1", "  DELAY 2", "  DELAY 3", "  DELAY 4", " EAREFLECT", " EAREFLECT", " REVERB 1", " REVERB 2", "   GATE"};
-char menu5Names[6][13] = {"  GLOBAL", "PORTMENTO", "PAN & VOLUME", " OFFSET TUNE", "    ARP", "  OUTPUT"};
-char menu11Names[4][8] = {"OSC1 1", "OSC1 2", "OSC1 3", "OSC1 4"};
-char menu12Names[4][8] = {"OSC2 1", "OSC2 2", "OSC2 3", "OSC2 4"};
-char menu13Names[4][8] = {"OSC3 1", "OSC3 2", "OSC3 3", "OSC3 4"};
-char menu14Names[4][8] = {"OSC4 1", "OSC4 2", "OSC4 3", "OSC4 4"};
-
-// store parameter names in char arrays
-char paramName0[4][5] = {"OSC1", "OSC2", "OSC3", "OSC4"};
-char paramName1_1[4][5] = {"TYPE",  "CUT1", "VELT", "DPTH"};
-char paramName1_2[4][5] = {"",      "CUT2", "KEYT",   "VELO"};
-char paramName1_3[4][5] = {"DRV",   "RES1", "VELR", ""};
-char paramName1_4[4][5] = {"ROUT",  "RES2", "KEYR", ""};
-char paramName2_1[13][5] = {"WAVE", "FADE", "WAVE", "FADE", "PIT",  "PIT",  "PIT",  "PIT",  "PIT",  "PIT",  "PIT",  "PIT",  "PIT"};
-char paramName2_2[13][5] = {"RNG",  "DPIT", "RNG",  "DPW",  "PW",   "PW",   "PW",   "PW",   "PW",   "PW",   "PW",   "PW",   "PW"};
-char paramName2_3[13][5] = {"SPD",  "DAMP", "SPD",  "DCUT", "FILT", "FILT", "FILT", "FILT", "CUT",  "CUT",  "CUT",  "CUT",  "CUT"};
-char paramName2_4[13][5] = {"SYNC", "",     "SYNC", "",     "AMP",  "AMP",  "AMP",  "AMP",  "VOL",  "VOL",  "VOL",  "VOL",  "VOL"};
-char paramName3_1[7][5] = {"", "", "", "AMP", "AMP", "AMP", "RANG"};
-char paramName3_2[7][5] = {"", "", "", "FLT", "FLT", "FLT", "VELO"};
-char paramName3_3[7][5] = {"", "", "", "PIT", "PIT", "PIT", ""};
-char paramName3_4[7][5] = {"", "", "", "", "", "", ""};
-char paramName4_1[19][5] = {"BW",   "ON", "PRE",  "BIT",  "LO", "DRY",  "SPD",  "DRY",  "SPD",  "SPD",  "DRY",  "FEED", "MUL",  "SMEA", "DRY",  "TAPS", "DRY",  "DAMP", "GATE"};
-char paramName4_2[19][5] = {"ROUT", "TYPE",   "POST", "DEC",  "HI", "WET",  "DPTH", "WET",  "DPTH", "DPTH", "WET",  "LO",   "DIV",  "2X",   "WET",  "FEED", "WET",  "HPF",  "CURV"};
-char paramName4_3[19][5] = {"",     "",       "FILT", "",     "",   "MODE", "FEED", "MODE", "FEED", "RANG", "MODE", "HI",   "SPD",  "",     "ROOM", "",     "MODE", "SPD",  "ATK"};
-char paramName4_4[19][5] = {"",     "",       "",     "",     "",   "",     "PHAS", "STAG", "PHAS", "PHAS", "TIME", "TMPO", "DPTH", "",     "",     "",     "DCAY", "DPTH", "REL"};
-char paramName5_1[6][5] = {"TRAN",  "MODE", "PAN",  "VOFF",  "MODE", "VOL"};
-char paramName5_2[6][5] = {"LEGT",  "TIME", "VOL",  "TUNE", "TEMP", "PRE"};
-char paramName5_3[6][5] = {"B UP",  "",     "",     "TOFF", "MUL",  ""};
-char paramName5_4[6][5] = {"B DN",  "",     "",     "",     "OCT",  "POST"};
-char paramName6_1[4][5] = {"OSC",   "TRAN", "LVL",  "PMS"};
-char paramName6_2[4][5] = {"PHAS", "DRFT", "VSEN", "AMS"};
-char paramName6_3[4][5] = {"WAVE", "TUNE", "LVLL", "RING"};
-char paramName6_4[4][5] = {"PW",   "SAW",  "LVLR", ""};
+char menuName[15];
+char paramNames[4][5];
 
 // store parameter value names in char arrays
 char valueName0[2][5] = {"OFF", "ON"};
@@ -105,7 +70,7 @@ char valueName3[22][5] = {"NONE", "1P L", "2P L", "3P L", "4P L", "1P H", "2P H"
 char valueName4[10][5] = {"TRI", "SQR", "SAWU", "SAWD", "SINE", "S+2S", "S+3S", "SIN3", "GUIT", "RAND"}; // lfo wave
 char valueName5[4][5] = {"SINF", "SINK", "MULF", "MINK"}; // lfo  sync behavior
 char valueName6[2][5] = {"POLY", "MONO"}; // legato
-char valueName7[3][5] = {"OFF", "YES", "FING"}; // porta mode
+char valueName7[3][5] = {"OFF", "ALWS", "FING"}; // porta mode
 char valueName8[6][5] = {"OFF", "UP", "DOWN", "UPDN", "PLAY", "RAND"}; // arp mode
 char valueName9[8][5] = {"FULL", "20 k", "18 k", "16 k", "14 k", "12 k", "10 k", "8 k"}; // bandwidth/filter post
 char valueName10[2][5] = {"PAR", "IND"}; // routing
@@ -141,11 +106,9 @@ void setup() {
   usbMIDI.setHandleNoteOn(midiNoteOn);
   usbMIDI.setHandleNoteOff(midiNoteOff);
 
-  delay(500); // wait for XVA1 to initialize before blasting it with commands
+  startA();
 
-  displayStatus(0);
-  delay(500);
-  displayText(100);
+  //delay(500); // wait for XVA1 to initialize before blasting it with commands
 
   doSleep = 0;
   timeout.start(timeOutTime);

@@ -242,3 +242,27 @@ int checkValue(int pNum, int pVal) { // take parameter number and value as input
 
   return pVal;
 }
+
+int checkModify() {
+  if (patchModify) {
+    bool cont = false;
+    display.clearDisplay();
+    display.setCursor(20, 30);
+    display.print("PATCH MODIFIED");
+    display.setCursor(35, 40);
+    display.print("CONTINUE? ");
+    display.display();
+    while (!cont) {
+      encUpdate();
+      if (tbtn2.isClick() || enc1.isClick() || enc2.isClick() || enc3.isClick() || enc4.isClick()) {
+        cont = true;
+        return 1;
+      }
+      else if (tbtn1.isClick() || tbtn3.isClick() || tbtn4.isClick()) {
+        cont = true;
+        return 0;
+      }
+    }
+  }
+  else return 1;
+}

@@ -14,7 +14,7 @@ void displayStatus(int i) {
         displayText(i);
       }
       delay(500);
-      displayText(presetType + 100);
+      displayText(100);
       break;
     case 2:
       clearText(1);
@@ -121,38 +121,7 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
     case 2: // encoder 1 title, top left
     case 20:
       display.setCursor(2, 0);
-      switch (presetType) {
-        case 0:
-          if (paramNum[0] >= 0) display.print(paramName0[0]);
-          break;
-        case 1:
-          if (paramNum[0] >= 0) display.print(paramName1_1[presetNum[1]]);
-          break;
-        case 2:
-          if (paramNum[0] >= 0) display.print(paramName2_1[presetNum[2]]);
-          break;
-        case 3:
-          if (paramNum[0] >= 0) display.print(paramName3_1[presetNum[3]]);
-          break;
-        case 4:
-          if (paramNum[0] >= 0) display.print(paramName4_1[presetNum[4]]);
-          break;
-        case 5:
-          if (paramNum[0] >= 0) display.print(paramName5_1[presetNum[5]]);
-          break;
-        case 11:
-          if (paramNum[0] > 0) display.print(paramName6_1[presetNum[11]]);
-          break;
-        case 12:
-          if (paramNum[0] > 0) display.print(paramName6_1[presetNum[12]]);
-          break;
-        case 13:
-          if (paramNum[0] > 0) display.print(paramName6_1[presetNum[13]]);
-          break;
-        case 14:
-          if (paramNum[0] > 0) display.print(paramName6_1[presetNum[14]]);
-          break;
-      }
+      if (paramNum[0] >= 0) display.print(paramNames[0]);
       break;
     case 3: // encoder 1 value
       display.setCursor(2, 12);
@@ -162,38 +131,7 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
     case 4: // encoder 2 title, top right
     case 22:
       display.setCursor(100, 0);
-      switch (presetType) {
-        case 0:
-          if (paramNum[1] >= 0) display.print(paramName0[1]);
-          break;
-        case 1:
-          if (paramNum[1] >= 0) display.print(paramName1_2[presetNum[1]]);
-          break;
-        case 2:
-          if (paramNum[1] >= 0) display.print(paramName2_2[presetNum[2]]);
-          break;
-        case 3:
-          if (paramNum[1] >= 0) display.print(paramName3_2[presetNum[3]]);
-          break;
-        case 4:
-          if (paramNum[1] >= 0) display.print(paramName4_2[presetNum[4]]);
-          break;
-        case 5:
-          if (paramNum[1] >= 0) display.print(paramName5_2[presetNum[5]]);
-          break;
-        case 11:
-          if (paramNum[1] > 0) display.print(paramName6_2[presetNum[11]]);
-          break;
-        case 12:
-          if (paramNum[1] > 0) display.print(paramName6_2[presetNum[12]]);
-          break;
-        case 13:
-          if (paramNum[1] > 0) display.print(paramName6_2[presetNum[13]]);
-          break;
-        case 14:
-          if (paramNum[1] > 0) display.print(paramName6_2[presetNum[14]]);
-          break;
-      }
+      if (paramNum[1] >= 0) display.print(paramNames[1]);
       break;
     case 5: // encoder 2 value
       display.setCursor(100, 12);
@@ -203,38 +141,7 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
     case 6: // encoder 3 title, bottom left.
     case 24:
       display.setCursor(2, 43);
-      switch (presetType) {
-        case 0:
-          if (paramNum[2] >= 0) display.print(paramName0[2]);
-          break;
-        case 1:
-          if (paramNum[2] >= 0) display.print(paramName1_3[presetNum[1]]);
-          break;
-        case 2:
-          if (paramNum[2] >= 0) display.print(paramName2_3[presetNum[2]]);
-          break;
-        case 3:
-          if (paramNum[2] >= 0) display.print(paramName3_3[presetNum[3]]);
-          break;
-        case 4:
-          if (paramNum[2] >= 0) display.print(paramName4_3[presetNum[4]]);
-          break;
-        case 5:
-          if (paramNum[2] >= 0) display.print(paramName5_3[presetNum[5]]);
-          break;
-        case 11:
-          if (paramNum[2] > 0) display.print(paramName6_3[presetNum[11]]);
-          break;
-        case 12:
-          if (paramNum[2] > 0) display.print(paramName6_3[presetNum[12]]);
-          break;
-        case 13:
-          if (paramNum[2] > 0) display.print(paramName6_3[presetNum[13]]);
-          break;
-        case 14:
-          if (paramNum[2] > 0) display.print(paramName6_3[presetNum[14]]);
-          break;
-      }
+      if (paramNum[2] >= 0) display.print(paramNames[2]);
       break;
     case 7: // encoder 3 value
       display.setCursor(2, 55);
@@ -244,38 +151,7 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
     case 8: // encoder 4 title, bottom right
     case 26:
       display.setCursor(100, 43);
-      switch (presetType) {
-        case 0:
-          if (paramNum[3] >= 0) display.print(paramName0[3]);
-          break;
-        case 1:
-          if (paramNum[3] >= 0) display.print(paramName1_4[presetNum[1]]);
-          break;
-        case 2:
-          if (paramNum[3] >= 0) display.print(paramName2_4[presetNum[2]]);
-          break;
-        case 3:
-          if (paramNum[3] >= 0) display.print(paramName3_4[presetNum[3]]);
-          break;
-        case 4:
-          if (paramNum[3] >= 0) display.print(paramName4_4[presetNum[4]]);
-          break;
-        case 5:
-          if (paramNum[3] >= 0) display.print(paramName5_4[presetNum[5]]);
-          break;
-        case 11:
-          if (paramNum[3] > 0) display.print(paramName6_4[presetNum[11]]);
-          break;
-        case 12:
-          if (paramNum[3] > 0) display.print(paramName6_4[presetNum[12]]);
-          break;
-        case 13:
-          if (paramNum[3] > 0) display.print(paramName6_4[presetNum[13]]);
-          break;
-        case 14:
-          if (paramNum[3] > 0) display.print(paramName6_4[presetNum[14]]);
-          break;
-      }
+      if (paramNum[3] >= 0) display.print(paramNames[3]);
       break;
     case 9: // encoder 4 value
       display.setCursor(100, 55);
@@ -327,8 +203,6 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
       display.setCursor(2, 12);
       display.print("    ");
       display.setCursor(2, 12);
-      //Serial.print("bitLocation[0]: ");
-      //Serial.println(bitValues[bitNum][bitLocation[0]]);
       if (bitLocation[0] >= 0) display.print(bitValues[bitNum][bitLocation[0]]);
       break;
     case 23: // osc 2 bit value
@@ -352,52 +226,7 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
     case 100:
       clearText(0);
       display.setCursor(30, 30);
-      display.print(menu0Names[presetNum[0]]);
-      break;
-    case 101:
-      clearText(0);
-      display.setCursor(30, 30);
-      display.print(menu1Names[presetNum[1]]);
-      break;
-    case 102:
-      clearText(0);
-      display.setCursor(30, 30);
-      display.print(menu2Names[presetNum[2]]);
-      break;
-    case 103:
-      clearText(0);
-      display.setCursor(30, 30);
-      display.print(menu3Names[presetNum[3]]);
-      break;
-    case 104:
-      clearText(0);
-      display.setCursor(25, 30);
-      display.print(menu4Names[presetNum[4]]);
-      break;
-    case 105:
-      clearText(0);
-      display.setCursor(25, 30);
-      display.print(menu5Names[presetNum[5]]);
-      break;
-    case 111:
-      clearText(0);
-      display.setCursor(35, 30);
-      display.print(menu11Names[presetNum[11]]);
-      break;
-    case 112:
-      clearText(0);
-      display.setCursor(35, 30);
-      display.print(menu12Names[presetNum[12]]);
-      break;
-    case 113:
-      clearText(0);
-      display.setCursor(35, 30);
-      display.print(menu13Names[presetNum[13]]);
-      break;
-    case 114:
-      clearText(0);
-      display.setCursor(35, 30);
-      display.print(menu14Names[presetNum[14]]);
+      display.print(menuName);
       break;
   }
   display.display();
@@ -406,6 +235,7 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
 void displayParam(int Param, int Value) {
   switch (Param) {
     case 1 ... 4:
+    case 285 ... 288:
     case 292:
     case 350:
     case 385:
@@ -601,4 +431,19 @@ void displayADSR() {
     stateChange = false;
 
   }
+}
+
+void startA() {
+ display.clearDisplay();
+
+  for(int16_t i=0; i<max(display.width(),display.height())/2; i+=5) {
+    display.drawTriangle(
+      display.width()/2  , display.height()/2-i,
+      display.width()/2-i, display.height()/2+i,
+      display.width()/2+i, display.height()/2+i, WHITE);
+    display.display();
+    delay(1);
+  }
+  delay(1000);
+  display.clearDisplay();
 }

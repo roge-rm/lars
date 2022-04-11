@@ -44,7 +44,6 @@ void savePatch () { // save current patch to EEPROM after prompting for patch nu
   Serial1.write(patchNum);
   while (!Serial1.available()); //wait for it
   Serial1.read();
-
 }
 
 void initPatch() { // initialize current patch

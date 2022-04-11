@@ -22,14 +22,9 @@ void readBits() { // read bit values for bitwise-stored variables
       break;
   }
   int bit0 = getParam(bParam);
-  //Serial.print("bitNum: ");
-  //Serial.println(bitNum);
-  //Serial.print("bitValues: ");
   for (int i = 7; i >= 0; i--) {
     bitValues[bitNum][i] = bitRead(bit0, i);
-    //Serial.print(bitValues[bitNum][i]);
   }
-  //Serial.println();
 }
 
 void storeBits() { // store bit values for bitwise-stored variables
@@ -52,15 +47,8 @@ void storeBits() { // store bit values for bitwise-stored variables
       bParam = 147;
       break;
   }
-  //Serial.print("bitNum: ");
-  //Serial.println(bitNum);
-  //Serial.print("bitValues: ");
   for (int i = 7; i >= 0; i--) {
     bitWrite(bit0, i, bitValues[bitNum][i]);
-    //Serial.print(bitValues[bitNum][i]);
   }
-  //Serial.println();
-  //Serial.print("bit0: ");
-  //Serial.println(bit0);
   setParam(bParam, bit0);
 }
