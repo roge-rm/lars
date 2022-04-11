@@ -59,7 +59,7 @@ bool stateChange = 1; // used to confirm display clear to prevent flickering/exc
 float egDLY, egL0, egL1, egL2, egL3, egL4, egL5, egR1, egR2, egR3, egR4, egR5;
 int eg0x, eg0y, eg1x, eg1y, eg2x, eg2y, eg3x, eg3y, eg4x, eg4y, eg5x, eg5y, eg6x, eg6y;
 
-char menuName[15];
+char menuName[20];
 char paramNames[4][5];
 
 // store parameter value names in char arrays
@@ -99,7 +99,7 @@ void setup() {
     butState[i] = 0;
   }
 
-  //  Serial.begin(9600); // for monitoring purposes
+  Serial.begin(9600); // for monitoring purposes
   Serial1.begin(500000); // connection to XVA1 requires 500kbps
 
   usbMIDI.setHandleProgramChange(midiProgramChange);

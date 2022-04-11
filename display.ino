@@ -52,9 +52,9 @@ void displayStatus(int i) {
       display.display();
       break;
     case 6:
-      display.setCursor(80, 30);
+      display.setCursor(80, 28);
       display.print("   ");
-      display.setCursor(80, 30);
+      display.setCursor(80, 28);
       display.print(midiPort);
       display.display();
       break;
@@ -64,11 +64,11 @@ void displayStatus(int i) {
 void clearText(int textNum) {
   switch (textNum) {
     case 0:
-      display.setCursor(0, 30);
+      display.setCursor(0, 28);
       display.print("                    ");
       break;
     case 1:
-      display.setCursor(70, 30);
+      display.setCursor(70, 28);
       display.print("   ");
       break;
     case 2:
@@ -111,11 +111,11 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
 
   switch (textNum) {
     case 0: // patch heading, centre of screen
-      display.setCursor(35, 30);
+      display.setCursor(35, 28);
       display.print(F("Patch"));
       break;
     case 1: // patch number
-      display.setCursor(70, 30);
+      display.setCursor(70, 28);
       display.print(patchNum);
       break;
     case 2: // encoder 1 title, top left
@@ -126,7 +126,7 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
     case 3: // encoder 1 value
       display.setCursor(2, 12);
       if (bitEdit) displayText(21);
-      else displayParam(paramNum[0], paramValue[0]);
+      else  displayParam(paramNum[0], paramValue[0]);
       break;
     case 4: // encoder 2 title, top right
     case 22:
@@ -160,22 +160,22 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
       break;
     case 10: // patch loaded
       clearText(0);
-      display.setCursor(20, 30);
+      display.setCursor(18, 28);
       display.print("Patch Loaded");
       break;
     case 11: // patch saved
       clearText(0);
-      display.setCursor(20, 30);
+      display.setCursor(18, 28);
       display.print("Patch Saved");
       break;
     case 12: // init patch
       clearText(0);
-      display.setCursor(25, 30);
+      display.setCursor(20, 28);
       display.print("Patch Init");
       break;
     case 13: // change MIDI channnel
       clearText(0);
-      display.setCursor(10, 30);
+      display.setCursor(10, 28);
       display.print("MIDI SET TO CH ");
       display.print(midiPort);
       break;
@@ -203,29 +203,32 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
       display.setCursor(2, 12);
       display.print("    ");
       display.setCursor(2, 12);
-      if (bitLocation[0] >= 0) display.print(bitValues[bitNum][bitLocation[0]]);
+      if (bitLocation[0] >= 0) displayBit(bitLocation[0]);
       break;
     case 23: // osc 2 bit value
       display.setCursor(100, 12);
       display.print("    ");
       display.setCursor(100, 12);
-      if (bitLocation[1] >= 0) display.print(bitValues[bitNum][bitLocation[1]]);
+      if (bitLocation[1] >= 0) displayBit(bitLocation[1]);
       break;
     case 25: // osc 3 bit value
       display.setCursor(2, 55);
       display.print("    ");
       display.setCursor(2, 55);
-      if (bitLocation[2] >= 0) display.print(bitValues[bitNum][bitLocation[2]]);
+      if (bitLocation[2] >= 0) displayBit(bitLocation[2]);
       break;
     case 27: // osc 4 bit value
       display.setCursor(100, 55);
       display.print("    ");
       display.setCursor(100, 55);
-      if (bitLocation[3] >= 0) display.print(bitValues[bitNum][bitLocation[3]]);
+      if (bitLocation[3] >= 0) displayBit(bitLocation[3]);
       break;
     case 100:
       clearText(0);
-      display.setCursor(30, 30);
+      int16_t x1, y1;
+      uint16_t w, h;
+      display.getTextBounds(menuName, 0, 0, &x1, &y1, &w, &h); // calculate width of menu heading
+      display.setCursor((128 - w)/2, 28); // centre heading
       display.print(menuName);
       break;
   }
@@ -235,6 +238,7 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
 void displayParam(int Param, int Value) {
   switch (Param) {
     case 1 ... 4:
+    case 271:
     case 285 ... 288:
     case 292:
     case 350:
@@ -434,16 +438,21 @@ void displayADSR() {
 }
 
 void startA() {
- display.clearDisplay();
+  display.clearDisplay();
 
-  for(int16_t i=0; i<max(display.width(),display.height())/2; i+=5) {
+  for (int16_t i = 0; i < max(display.width(), display.height()) / 2; i += 5) {
     display.drawTriangle(
-      display.width()/2  , display.height()/2-i,
-      display.width()/2-i, display.height()/2+i,
-      display.width()/2+i, display.height()/2+i, WHITE);
+      display.width() / 2  , display.height() / 2 - i,
+      display.width() / 2 - i, display.height() / 2 + i,
+      display.width() / 2 + i, display.height() / 2 + i, WHITE);
     display.display();
     delay(1);
   }
-  delay(1000);
+  delay(500);
   display.clearDisplay();
+}
+
+void displayBit (int i) {
+  if (bitValues[bitNum][bitLocation[i]]) display.print("ON ");
+  else display.print("OFF");
 }
