@@ -1,7 +1,7 @@
 # lars
 ##### a small but powerful controller for the XVA1 synthesizer
 
-<img src=https://raw.githubusercontent.com/hunked/lars/main/images/07.jpg width=800>
+<img src=https://raw.githubusercontent.com/hunked/lars/main/images/lars_01.jpg width=800>
 
 I came across the <a href=https://www.futur3soundz.com/>XVA1 FPGA Synthesizer</a> recently and decided to have a go at creating a control interface with parts I had sitting around. This monstrosity is the result of that proces and I felt like sharing it even though it is clearly a work in progress.
 
