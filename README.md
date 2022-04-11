@@ -17,7 +17,7 @@ The brains of the operation is a Teensy 2.0++ connected to four clickable encode
 
 One of the more interesting challenges has been the 7 segment envelope generator. Thanks to some helpful tips from a user on the r/Synthesizers discord I have developed a graphical interface to display and edit the three EGs. I could not wrap my head around the values individually but seeing them laid out graphically makes it much easier to tweak in a way I can understand.
 
-<img src=https://raw.githubusercontent.com/hunked/lars/main/images/06.jpg width=300>
+<img src=https://raw.githubusercontent.com/hunked/lars/main/images/06.jpg width=300> <img src=https://raw.githubusercontent.com/hunked/lars/main/images/08.jpg width=300>
 
 I am not posting any of this in expectation that anyone will copy me - the code is a work in progress as I hack together ideas and clean things up. But if you are trying to make a controller for your XVA1 perhaps some of this could be of use to you!
 
