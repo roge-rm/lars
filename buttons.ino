@@ -97,7 +97,7 @@ void doTopButtons() { // top row button handling
 }
 
 void doBotButtons() { // bottom row button handling
-  if (bbtn1.isPress()) {
+  if (bbtn1.isClick()) {
     if (presetType == 0) {
       presetNum[0]++;
       if (presetNum[0] > 21) presetNum[0] = 0;
@@ -112,7 +112,7 @@ void doBotButtons() { // bottom row button handling
     doClear();
   }
 
-  else if (bbtn2.isPress()) {
+  else if (bbtn2.isClick()) {
     if (presetType == 1) {
       presetNum[1]++;
       if (presetNum[1] > 3) presetNum[1] = 0;
@@ -127,7 +127,7 @@ void doBotButtons() { // bottom row button handling
     doClear();
   }
 
-  else if (bbtn3.isPress()) {
+  else if (bbtn3.isClick()) {
     if (presetType == 2) {
       presetNum[2]++;
       if (presetNum[2] > 12) presetNum[2] = 0;
@@ -142,7 +142,7 @@ void doBotButtons() { // bottom row button handling
     doClear();
   }
 
-  else if (bbtn4.isPress()) { // envelope generator
+  else if (bbtn4.isClick()) { // envelope generator
     if (presetType == 3) {
       presetNum[3]++;
       if (presetNum[3] > 6) presetNum[3] = 0;
@@ -156,7 +156,7 @@ void doBotButtons() { // bottom row button handling
 
   }
 
-  else if (bbtn5.isPress()) {
+  else if (bbtn5.isClick()) {
     if (presetType == 4) {
       presetNum[4]++;
       if (presetNum[4] > 16) presetNum[4] = 0;
@@ -171,7 +171,7 @@ void doBotButtons() { // bottom row button handling
     doClear();
   }
 
-  else if (bbtn6.isPress()) {
+  else if (bbtn6.isClick()) {
     if (presetType == 5) {
       presetNum[5]++;
       if (presetNum[5] > 4) presetNum[5] = 0;
@@ -196,7 +196,7 @@ void doClear() {
 
 void doScrButtons() { // handle buttons around screen (not encoders)
   if (presetType != 3) { // if not in ADSR editor
-    if (sbtn1.isPress()) {
+    if (sbtn1.isClick()) {
       if (presetType == 11) {
         presetNum[11]++;
         if (presetNum[11] > 3) presetNum[11] = 0;
@@ -209,7 +209,7 @@ void doScrButtons() { // handle buttons around screen (not encoders)
       doPreset = true;
     }
 
-    else if (sbtn2.isPress()) {
+    else if (sbtn2.isClick()) {
       if (presetType == 12) {
         presetNum[12]++;
         if (presetNum[12] > 3) presetNum[12] = 0;
@@ -222,7 +222,7 @@ void doScrButtons() { // handle buttons around screen (not encoders)
       doPreset = true;
     }
 
-    else if (sbtn3.isPress()) {
+    else if (sbtn3.isClick()) {
       if (presetType == 13) {
         presetNum[13]++;
         if (presetNum[13] > 3) presetNum[13] = 0;
@@ -235,7 +235,7 @@ void doScrButtons() { // handle buttons around screen (not encoders)
       doPreset = true;
     }
 
-    else if (sbtn4.isPress()) {
+    else if (sbtn4.isClick()) {
       if (presetType == 14) {
         presetNum[14]++;
         if (presetNum[14] > 3) presetNum[14] = 0;
@@ -249,19 +249,19 @@ void doScrButtons() { // handle buttons around screen (not encoders)
     }
   }
   else if (presetType == 3) {
-    if (sbtn1.isPress()) {
+    if (sbtn1.isClick()) {
       editEG[0] = !editEG[0];
       doPreset = true;
     }
-    else if (sbtn2.isPress()) {
+    else if (sbtn2.isClick()) {
       editEG[1] = !editEG[1];
       doPreset = true;
     }
-    else if (sbtn3.isPress()) {
+    else if (sbtn3.isClick()) {
       editEG[2] = !editEG[2];
       doPreset = true;
     }
-    else if (sbtn4.isPress()) {
+    else if (sbtn4.isClick()) {
       editEG[3] = !editEG[3];
       doPreset = true;
     }

@@ -3,29 +3,28 @@
 int changeMIDI() { // change what MIDI port the XVA1 responds to
   bool cont = false;
   display.clearDisplay();
-  display.setCursor(15, 30);
+  display.setCursor(15, 28);
   display.print("MIDI PORT: ");
   displayStatus(6);
   while (!cont) {
     encUpdate();
 
-    if (enc1.isLeft()) {
+    if (enc1.isLeft() || enc2.isLeft() || enc3.isLeft() || enc4.isLeft()) {
       midiPort--;
       if (midiPort < 0) midiPort = 16;
       displayStatus(6);
     }
-    else if (enc1.isRight()) {
+    else if (enc1.isRight() || enc2.isRight() || enc3.isRight() || enc4.isRight()) {
       midiPort++;
       if (midiPort > 16) midiPort = 0;
       displayStatus(6);
     }
-
-    else if (tbtn4.isPress()) {
+    else if (tbtn4.isClick() || enc1.isClick() || enc2.isClick() || enc3.isClick() || enc4.isClick()) {
       setMIDI(midiPort);
       cont = true;
       return 1;
     }
-    else if (tbtn1.isPress() || tbtn2.isPress() || tbtn3.isPress()) {
+    else if (tbtn1.isClick() || tbtn2.isClick() || tbtn3.isClick() || bbtn1.isClick() || bbtn2.isClick() || bbtn3.isClick() || bbtn4.isClick() || bbtn5.isClick() || bbtn6.isClick()) {
       cont = true;
       return 0;
     }
@@ -41,23 +40,23 @@ int changeSave() { // prompt for patch number to save to
   while (!cont) {
     encUpdate();
 
-    if (enc1.isLeft()) {
+    if (enc1.isLeft() || enc2.isLeft() || enc3.isLeft() || enc4.isLeft()) {
       patchNum--;
       if (patchNum < 0) patchNum = 127;
       displayStatus(5);
     }
-    else if (enc1.isRight()) {
+    else if (enc1.isRight() || enc2.isRight() || enc3.isRight() || enc4.isRight()) {
       patchNum++;
       if (patchNum > 127) patchNum = 0;
       displayStatus(5);
     }
-
-    else if (tbtn4.isPress()) {
+    else if (tbtn4.isClick() || enc1.isClick() || enc2.isClick() || enc3.isClick() || enc4.isClick()) {
       savePatch();
       cont = true;
+      patchModify = false;
       return 1;
     }
-    else if (tbtn1.isPress() || tbtn2.isPress() || tbtn3.isPress()) {
+    else if (tbtn1.isClick() || tbtn2.isClick() || tbtn3.isClick() || bbtn1.isClick() || bbtn2.isClick() || bbtn3.isClick() || bbtn4.isClick() || bbtn5.isClick() || bbtn6.isClick()) {
       cont = true;
       return 0;
     }
@@ -67,10 +66,11 @@ int changeSave() { // prompt for patch number to save to
 
 void changePreset() {
   stateChange = true;
+  if ((presetType == 0) && (presetNum[0] == 4 || presetNum[0] == 6)) bitEdit = 1;
+  else bitEdit = 0;
+  
   switch (presetType) {
     case 0: // oscillators
-      if (presetNum[0] == 4 || presetNum[0] == 6) bitEdit = 1;
-      else bitEdit = 0;
       switch (presetNum[0]) {
         case 0: // on/off
           strcpy(menuName, "OSC ON/OFF");
@@ -84,7 +84,7 @@ void changePreset() {
           paramNum[3] = 4;
           break;
         case 1: // waveform
-          strcpy(menuName, " WAVEFORM");
+          strcpy(menuName, "WAVEFORM");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -106,7 +106,7 @@ void changePreset() {
           paramNum[3] = 18;
           break;
         case 3: // sawstack detune
-          strcpy(menuName, "SAWSTACK DET");
+          strcpy(menuName, "SAWSTACK DETUNE");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -117,7 +117,7 @@ void changePreset() {
           paramNum[3] = 288;
           break;
         case 4: // sync
-          strcpy(menuName, "   SYNC");
+          strcpy(menuName, "SYNC");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -134,7 +134,7 @@ void changePreset() {
           bitLocation[3] = 3;
           break;
         case 5: // phase
-          strcpy(menuName, "   PHASE");
+          strcpy(menuName, "PHASE");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -145,7 +145,7 @@ void changePreset() {
           paramNum[3] = 10;
           break;
         case 6: // mode
-          strcpy(menuName, "   MODE");
+          strcpy(menuName, "MODE");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -162,7 +162,7 @@ void changePreset() {
           bitLocation[3] = 3;
           break;
         case 7: // transpose
-          strcpy(menuName, " TRANSPOSE");
+          strcpy(menuName, "TRANSPOSE");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -173,7 +173,7 @@ void changePreset() {
           paramNum[3] = 22;
           break;
         case 8: // tune
-          strcpy(menuName, "  DETUNE");
+          strcpy(menuName, "DETUNE");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -184,7 +184,7 @@ void changePreset() {
           paramNum[3] = 26;
           break;
         case 9: // drift
-          strcpy(menuName, "  DRIFT");
+          strcpy(menuName, "DRIFT");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -195,7 +195,7 @@ void changePreset() {
           paramNum[3] = 263;
           break;
         case 10: // level
-          strcpy(menuName, "  LEVEL");
+          strcpy(menuName, "LEVEL");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -206,7 +206,7 @@ void changePreset() {
           paramNum[3] = 30;
           break;
         case 11: // level l
-          strcpy(menuName, " LEVEL L");
+          strcpy(menuName, "LEVEL L");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -217,7 +217,7 @@ void changePreset() {
           paramNum[3] = 37;
           break;
         case 12: // level r
-          strcpy(menuName, " LEVEL R");
+          strcpy(menuName, "LEVEL R");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -228,7 +228,7 @@ void changePreset() {
           paramNum[3] = 38;
           break;
         case 13: // velo sens
-          strcpy(menuName, " VELO SENS");
+          strcpy(menuName, "VELOCITY SENS");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -239,7 +239,7 @@ void changePreset() {
           paramNum[3] = 42;
           break;
         case 14: // key bp
-          strcpy(menuName, "  KEY BP");
+          strcpy(menuName, "KEY BP");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -294,7 +294,7 @@ void changePreset() {
           paramNum[3] = 62;
           break;
         case 19: // pitch mod sens
-          strcpy(menuName, " PM SENS");
+          strcpy(menuName, "PITCH MOD SENS");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -305,7 +305,7 @@ void changePreset() {
           paramNum[3] = 66;
           break;
         case 20: // amp mod sens
-          strcpy(menuName, " AM SENS");
+          strcpy(menuName, "AMP MOD SENS");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -316,7 +316,7 @@ void changePreset() {
           paramNum[3] = 70;
           break;
         case 21: // ring mod
-          strcpy(menuName, " RING MOD");
+          strcpy(menuName, "RING MOD");
           strcpy(paramNames[0], "OSC1");
           strcpy(paramNames[1], "OSC2");
           strcpy(paramNames[2], "OSC3");
@@ -331,7 +331,7 @@ void changePreset() {
     case 1: // filters
       switch (presetNum[1]) {
         case 0: // filter/drive/routing
-          strcpy(menuName, "  FILTER");
+          strcpy(menuName, "FILTER");
           strcpy(paramNames[0], "TYPE");
           strcpy(paramNames[1], "");
           strcpy(paramNames[2], "DRV");
@@ -342,7 +342,7 @@ void changePreset() {
           paramNum[3] = 278;
           break;
         case 1: // cutoff/reso 1/2
-          strcpy(menuName, "CUTOFF/RESO");
+          strcpy(menuName, "CUTOFF/RESONANCE");
           strcpy(paramNames[0], "CUT1");
           strcpy(paramNames[1], "CUT2");
           strcpy(paramNames[2], "RES1");
@@ -353,7 +353,7 @@ void changePreset() {
           paramNum[3] = 79;
           break;
         case 2: // vel/kb track/reso 1/2
-          strcpy(menuName, "TRACK/RESO");
+          strcpy(menuName, "KBD TRACK/RESONANCE");
           strcpy(paramNames[0], "VELT");
           strcpy(paramNames[1], "KEYT");
           strcpy(paramNames[2], "VELR");
@@ -364,7 +364,7 @@ void changePreset() {
           paramNum[3] = 277;
           break;
         case 3: // eg depth/velocity
-          strcpy(menuName, " ENV GEN");
+          strcpy(menuName, " ENVELOPE GEN");
           strcpy(paramNames[0], "DPTH");
           strcpy(paramNames[1], "VELO");
           strcpy(paramNames[2], "");
@@ -377,7 +377,6 @@ void changePreset() {
       }
       break;
     case 2: // modulation
-
       switch (presetNum[2]) {
         case 0: // LFO1 wave/range/speed/sync
           strcpy(menuName, "LFO1 MOD1");
@@ -618,7 +617,7 @@ void changePreset() {
           }
           break;
         case 3:
-          strcpy(menuName, " EG LOOP");
+          strcpy(menuName, "EG LOOP");
           strcpy(paramNames[0], "AMP");
           strcpy(paramNames[1], "FLT");
           strcpy(paramNames[2], "PIT");
@@ -673,7 +672,7 @@ void changePreset() {
           doClear();
           break;
         case 6:
-          strcpy(menuName, "  PITCH");
+          strcpy(menuName, "PITCH");
           strcpy(paramNames[0], "RANG");
           strcpy(paramNames[1], "VELO");
           strcpy(paramNames[2], "");
@@ -693,7 +692,7 @@ void changePreset() {
     case 4: // effects
       switch (presetNum[4]) {
         case 0: // chorus/flanger dry/wet/mode
-          strcpy(menuName, "CHORUS/FLANGER");
+          strcpy(menuName, "CHORUS/FLANGER 1");
           strcpy(paramNames[0], "DRY");
           strcpy(paramNames[1], "WET");
           strcpy(paramNames[2], "MODE");
@@ -704,7 +703,7 @@ void changePreset() {
           paramNum[3] = -1;
           break;
         case 1: // chorus/flanger speed/depth/feedback/phase
-          strcpy(menuName, "CHORUS/FLANGER");
+          strcpy(menuName, "CHORUS/FLANGER 2");
           strcpy(paramNames[0], "SPD");
           strcpy(paramNames[1], "DPTH");
           strcpy(paramNames[2], "FEED");
@@ -715,7 +714,7 @@ void changePreset() {
           paramNum[3] = 366;
           break;
         case 2: // delay dry/wet/mode/time
-          strcpy(menuName, "  DELAY 1");
+          strcpy(menuName, "DELAY 1");
           strcpy(paramNames[0], "DRY");
           strcpy(paramNames[1], "WET");
           strcpy(paramNames[2], "MODE");
@@ -726,7 +725,7 @@ void changePreset() {
           paramNum[3] = 303;
           break;
         case 3: // delay mul/div/mod speed/mod depth
-          strcpy(menuName, "  DELAY 2");
+          strcpy(menuName, "DELAY 2");
           strcpy(paramNames[0], "MUL");
           strcpy(paramNames[1], "DIV");
           strcpy(paramNames[2], "SPD");
@@ -737,7 +736,7 @@ void changePreset() {
           paramNum[3] = 299;
           break;
         case 4: // delay feedback/tempo/low/high
-          strcpy(menuName, "  DELAY 3");
+          strcpy(menuName, "DELAY 3");
           strcpy(paramNames[0], "FEED");
           strcpy(paramNames[1], "TMPO");
           strcpy(paramNames[2], "LOW");
@@ -748,7 +747,7 @@ void changePreset() {
           paramNum[3] = 306;
           break;
         case 5: // delay smear/2x
-          strcpy(menuName, "  DELAY 4");
+          strcpy(menuName, "DELAY 4");
           strcpy(paramNames[0], "SMEA");
           strcpy(paramNames[1], "2X");
           strcpy(paramNames[2], "");
@@ -759,7 +758,7 @@ void changePreset() {
           paramNum[3] = -1;
           break;
         case 6: // reverb dry/wet/mode/decay
-          strcpy(menuName, " REVERB 1");
+          strcpy(menuName, "REVERB 1");
           strcpy(paramNames[0], "DRY");
           strcpy(paramNames[1], "WET");
           strcpy(paramNames[2], "MODE");
@@ -770,7 +769,7 @@ void changePreset() {
           paramNum[3] = 393;
           break;
         case 7: // reverb damp/hpf/mod speed/mod depth
-          strcpy(menuName, " REVERB 2");
+          strcpy(menuName, "REVERB 2");
           strcpy(paramNames[0], "DAMP");
           strcpy(paramNames[1], "HPF");
           strcpy(paramNames[2], "SPD");
@@ -781,7 +780,7 @@ void changePreset() {
           paramNum[3] = 396;
           break;
         case 8: // er dry/wet/room
-          strcpy(menuName, " EAREFLECT");
+          strcpy(menuName, "EAREFLECT 1");
           strcpy(paramNames[0], "DRY");
           strcpy(paramNames[1], "WET");
           strcpy(paramNames[2], "ROOM");
@@ -792,7 +791,7 @@ void changePreset() {
           paramNum[3] = -1;
           break;
         case 9: // er taps/feedback
-          strcpy(menuName, " EAREFLECT");
+          strcpy(menuName, "EAREFLECT 2");
           strcpy(paramNames[0], "TAPS");
           strcpy(paramNames[1], "FEED");
           strcpy(paramNames[2], "");
@@ -803,7 +802,7 @@ void changePreset() {
           paramNum[3] = -1;
           break;
         case 10: // phaser dry/wet/mode/stages
-          strcpy(menuName, " PHASER 1");
+          strcpy(menuName, "PHASER 1");
           strcpy(paramNames[0], "DRY");
           strcpy(paramNames[1], "WET");
           strcpy(paramNames[2], "MODE");
@@ -814,7 +813,7 @@ void changePreset() {
           paramNum[3] = 317;
           break;
         case 11: // phaser speed/depth/feedback/phase
-          strcpy(menuName, " PHASER 2");
+          strcpy(menuName, "PHASER 2");
           strcpy(paramNames[0], "SPD");
           strcpy(paramNames[1], "DPTH");
           strcpy(paramNames[2], "FEED");
@@ -836,7 +835,7 @@ void changePreset() {
           paramNum[3] = 321;
           break;
         case 13: // gate onoff/curve/attack/release
-          strcpy(menuName, "   GATE");
+          strcpy(menuName, "GATE");
           strcpy(paramNames[0], "GATE");
           strcpy(paramNames[1], "CURV");
           strcpy(paramNames[2], "ATK");
@@ -847,7 +846,7 @@ void changePreset() {
           paramNum[3] = 388;
           break;
         case 14: // amp mod speed/depth/range/phase
-          strcpy(menuName, "  AMP MOD");
+          strcpy(menuName, "AMP MOD");
           strcpy(paramNames[0], "SPD");
           strcpy(paramNames[1], "DPTH");
           strcpy(paramNames[2], "RANG");
@@ -858,7 +857,7 @@ void changePreset() {
           paramNum[3] = 333;
           break;
         case 15: // bw/routing/distort on/type
-          strcpy(menuName, "BW/ROUT/DIST");
+          strcpy(menuName, "BW/ROUTE/DISTORT");
           strcpy(paramNames[0], "BW");
           strcpy(paramNames[1], "ROUT");
           strcpy(paramNames[2], "DIST");
@@ -886,7 +885,7 @@ void changePreset() {
     case 5: // global params
       switch (presetNum[5]) {
         case 0: // arp mode/tempo/mul/octaves
-          strcpy(menuName, "    ARP");
+          strcpy(menuName, "ARP");
           strcpy(paramNames[0], "MODE");
           strcpy(paramNames[1], "TEMP");
           strcpy(paramNames[2], "MUL");
@@ -897,7 +896,7 @@ void changePreset() {
           paramNum[3] = 454;
           break;
         case 1: // transpose/legato/bend up/bend down
-          strcpy(menuName, "  GLOBAL");
+          strcpy(menuName, "GLOBAL");
           strcpy(paramNames[0], "TPOS");
           strcpy(paramNames[1], "LEGT");
           strcpy(paramNames[2], "B UP");
@@ -919,7 +918,7 @@ void changePreset() {
           paramNum[3] = 248;
           break;
         case 3: // velo offset/tuning/temp offset
-          strcpy(menuName, " OFFSET TUNE");
+          strcpy(menuName, "OFFSET TUNE");
           strcpy(paramNames[0], "VOFF");
           strcpy(paramNames[1], "TUNE");
           strcpy(paramNames[2], "TOFF");
@@ -930,7 +929,7 @@ void changePreset() {
           paramNum[3] = -1;
           break;
         case 4: // output volume/gain pre/gain post
-          strcpy(menuName, "  OUTPUT");
+          strcpy(menuName, "OUTPUT");
           strcpy(paramNames[0], "VOL");
           strcpy(paramNames[1], "PRE");
           strcpy(paramNames[2], "");
@@ -945,7 +944,7 @@ void changePreset() {
     case 11: // osc 1 submenu
       switch (presetNum[11]) {
         case 0: // onoff/phase/waveform/pulse width
-          strcpy(menuName, "  OSC1 1");
+          strcpy(menuName, "OSC1 1");
           strcpy(paramNames[0], "OSC");
           strcpy(paramNames[1], "PHAS");
           strcpy(paramNames[2], "WAVE");
@@ -956,7 +955,7 @@ void changePreset() {
           paramNum[3] = 15;
           break;
         case 1: // transpose/drift/detune/saw detune
-          strcpy(menuName, "  OSC1 2");
+          strcpy(menuName, "OSC1 2");
           strcpy(paramNames[0], "TPOS");
           strcpy(paramNames[1], "DRFT");
           strcpy(paramNames[2], "TUNE");
@@ -967,7 +966,7 @@ void changePreset() {
           paramNum[3] = 285;
           break;
         case 2: // level/velocity sensitivity,level l, level r
-          strcpy(menuName, "  OSC1 3");
+          strcpy(menuName, "OSC1 3");
           strcpy(paramNames[0], "LVL");
           strcpy(paramNames[1], "VSEN");
           strcpy(paramNames[2], "LVLL");
@@ -978,7 +977,7 @@ void changePreset() {
           paramNum[3] = 32;
           break;
         case 3: // pms, ams
-          strcpy(menuName, "  OSC1 4");
+          strcpy(menuName, "OSC1 4");
           strcpy(paramNames[0], "PMS");
           strcpy(paramNames[1], "AMS");
           strcpy(paramNames[2], "RING");
@@ -994,7 +993,7 @@ void changePreset() {
 
       switch (presetNum[12]) {
         case 0: // onoff/phase/waveform/pulse width
-          strcpy(menuName, "  OSC2 1");
+          strcpy(menuName, "OSC2 1");
           strcpy(paramNames[0], "OSC");
           strcpy(paramNames[1], "PHAS");
           strcpy(paramNames[2], "WAVE");
@@ -1005,7 +1004,7 @@ void changePreset() {
           paramNum[3] = 16;
           break;
         case 1: // transpose/drift/detune/saw detune
-          strcpy(menuName, "  OSC2 2");
+          strcpy(menuName, "OSC2 2");
           strcpy(paramNames[0], "TPOS");
           strcpy(paramNames[1], "DRFT");
           strcpy(paramNames[2], "TUNE");
@@ -1016,7 +1015,7 @@ void changePreset() {
           paramNum[3] = 286;
           break;
         case 2: // level/velocity sensitivity,level l, level r
-          strcpy(menuName, "  OSC2 3");
+          strcpy(menuName, "OSC2 3");
           strcpy(paramNames[0], "LVL");
           strcpy(paramNames[1], "VSEN");
           strcpy(paramNames[2], "LVLL");
@@ -1027,7 +1026,7 @@ void changePreset() {
           paramNum[3] = 34;
           break;
         case 3: // pms, ams
-          strcpy(menuName, "  OSC2 4");
+          strcpy(menuName, "OSC2 4");
           strcpy(paramNames[0], "PMS");
           strcpy(paramNames[1], "AMS");
           strcpy(paramNames[2], "RING");
@@ -1043,7 +1042,7 @@ void changePreset() {
 
       switch (presetNum[13]) {
         case 0: // onoff/phase/waveform/pulse width
-          strcpy(menuName, "  OSC3 1");
+          strcpy(menuName, "OSC3 1");
           strcpy(paramNames[0], "OSC");
           strcpy(paramNames[1], "PHAS");
           strcpy(paramNames[2], "WAVE");
@@ -1054,7 +1053,7 @@ void changePreset() {
           paramNum[3] = 17;
           break;
         case 1: // transpose/drift/detune/saw detune
-          strcpy(menuName, "  OSC3 2");
+          strcpy(menuName, "OSC3 2");
           strcpy(paramNames[0], "TPOS");
           strcpy(paramNames[1], "DRFT");
           strcpy(paramNames[2], "TUNE");
@@ -1065,7 +1064,7 @@ void changePreset() {
           paramNum[3] = 287;
           break;
         case 2: // level/velocity sensitivity,level l, level r
-          strcpy(menuName, "  OSC3 3");
+          strcpy(menuName, "OSC3 3");
           strcpy(paramNames[0], "LVL");
           strcpy(paramNames[1], "VSEN");
           strcpy(paramNames[2], "LVLL");
@@ -1076,7 +1075,7 @@ void changePreset() {
           paramNum[3] = 36;
           break;
         case 3: // pms, ams, ring mod
-          strcpy(menuName, "  OSC3 4");
+          strcpy(menuName, "OSC3 4");
           strcpy(paramNames[0], "PMS");
           strcpy(paramNames[1], "AMS");
           strcpy(paramNames[2], "RING");
@@ -1092,7 +1091,7 @@ void changePreset() {
 
       switch (presetNum[14]) {
         case 0: // onoff/phase/waveform/pulse width
-          strcpy(menuName, "  OSC4 1");
+          strcpy(menuName, "OSC4 1");
           strcpy(paramNames[0], "OSC");
           strcpy(paramNames[1], "PHAS");
           strcpy(paramNames[2], "WAVE");
@@ -1103,7 +1102,7 @@ void changePreset() {
           paramNum[3] = 18;
           break;
         case 1: // transpose/drift/detune/saw detune
-          strcpy(menuName, "  OSC4 2");
+          strcpy(menuName, "OSC4 2");
           strcpy(paramNames[0], "TPOS");
           strcpy(paramNames[1], "DRFT");
           strcpy(paramNames[2], "TUNE");
@@ -1114,7 +1113,7 @@ void changePreset() {
           paramNum[3] = 288;
           break;
         case 2: // level/velocity sensitivity,level l, level r
-          strcpy(menuName, "  OSC4 3");
+          strcpy(menuName, "OSC4 3");
           strcpy(paramNames[0], "LVL");
           strcpy(paramNames[1], "VSEN");
           strcpy(paramNames[2], "LVLL");
@@ -1125,7 +1124,7 @@ void changePreset() {
           paramNum[3] = 38;
           break;
         case 3: // pms, ams, ring mod
-          strcpy(menuName, "  OSC4 4");
+          strcpy(menuName, "OSC4 4");
           strcpy(paramNames[0], "PMS");
           strcpy(paramNames[1], "AMS");
           strcpy(paramNames[2], "RING");
@@ -1148,8 +1147,6 @@ void changePreset() {
 }
 
 void changeValue(int pNum, int pDir) { // inputs are parameter number and direction of change
-  patchModify = true;
-  stateChange = true;
   if (!bitEdit) { // when editing normal, non-bitwise values
     switch (pDir) {
       case 0:
@@ -1174,7 +1171,6 @@ void changeValue(int pNum, int pDir) { // inputs are parameter number and direct
     displayText(((pNum + 1) * 2) + 1); // update displayed value
 
   }
-
   else if (bitEdit) { // when editing bitwise values
     if (bitLocation[pNum] >= 0) {
       bitValues[bitNum][bitLocation[pNum]] = !bitValues[bitNum][bitLocation[pNum]];
@@ -1184,6 +1180,9 @@ void changeValue(int pNum, int pDir) { // inputs are parameter number and direct
 
     displayText(((pNum + 1) * 2) + 19);
   }
+
+  patchModify = true;
+  stateChange = true;
 }
 
 void changePatch() {
@@ -1228,7 +1227,7 @@ void changePatch() {
         cont = true;
         patchModify = false;
       }
-      
+
       else if (tbtn1.isClick() || tbtn2.isClick() || tbtn3.isClick() || bbtn1.isClick() || bbtn2.isClick() || bbtn3.isClick() || bbtn4.isClick() || bbtn5.isClick() || bbtn6.isClick()) { // any other top button or all bottom buttons will cancel selection
         cont = true;
         patchNum = oldPatch;
