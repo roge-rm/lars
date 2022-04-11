@@ -3,14 +3,23 @@
 
 <img src=https://raw.githubusercontent.com/hunked/lars/main/images/07.jpg width=800>
 
-I came across the <a href=https://www.futur3soundz.com/>XVA1 FPGA Synthesizer</a> recently and decided to have a go at creating a control interface with parts I had sitting around. This monstrosity is the result of that proces and I felt like sharing it even though it is clearly a work in progress.
+I came across the <a href=https://www.futur3soundz.com/>XVA1 FPGA Synthesizer</a> recently and decided to have a go at creating a control interface with parts I had sitting around. 
+This is the result of that process, though it is still a work in progress.
 
-My goal is to make a controller that allows me to edit all of the parameters on the XVA1 without having to hook it up to a computer. Ideally the control surface would be larger, there would be more screens and buttons and knobs and maybe sliders? But that's somewhere down the road. In the meantime I have used only parts that were already in my parts bins (check out how I joined two perfboards together and judge me as you will) to create something functional (if not optimal).
+<img src=https://raw.githubusercontent.com/hunked/lars/main/images/01.jpg width=300> <img src=https://raw.githubusercontent.com/hunked/lars/main/images/02.jpg width=300>
 
-The brains of the operation is a Teensy 2.0++. I have a few sitting around, they have lots of IO pins, and maybe it's not the fastest board out there but it was already here. I added four button encoders, fourteen lil buttons, and one tiny OLED screen and called it a day. Communication with the XVA1 is done via UART and they even share a power bus so I don't have to plug more things in.
+My goal is to make a controller that allows me to edit all of the parameters on the XVA1 without having to hook it up to a computer. So far most parameters on the XVA1 are editable from the controller itself, except the sequencer and MIDI performance controls, in a menu system accessible through the fourteen buttons. 
+Figuring out how to make a menu system to go with the board layout I've chosen has been ..interesting.. and is progressing now that a 3D printed housing has been added.
 
-The software functionality is coming along, most values are editable using a number of submenus (I hope you are good at diving) accessed via the six lower buttons below the Teensy. Most screens allow for editing of four variables at a time (laid out somewhat thoughtfully but due for revision at some point) and I've spent a fair bit of time working on a graphical editor for the 7 segment ADSR envelope generator. I'd say that the UI is at a point where the XVA1 is usable as a synthesizer, further development on that front is on hold while I work on a nicer looking enclosure.
+The brains of the operation is a Teensy 2.0++ connected to four clickable encoders and fourteen buttons. The encoders and four buttons are arranged around a 0.96" OLED screen and used for editing up to four values at once. The rest of the buttons are arranged to the right - the bottom six switch between six different submenus (oscillators, filters, modulation, envelope generators, effects, and arp/general settings) while the top four perform functions such as changing, loading, and saving patches and accessing additional settings. Communication with the XVA1 is done over a serial connection and MIDI data goes straight into the XVA1 itself through the port on the back.
 
-I am posting this to github in case anyone else out there is trying to make an XVA1 controller - hopefully my code and ideas can be helpful to you.
+<img src=https://raw.githubusercontent.com/hunked/lars/main/images/04.jpg width=300> <img src=https://raw.githubusercontent.com/hunked/lars/main/images/05.jpg width=300>
 
-Cheers, check out my other projects if you like what you see here.
+One of the more interesting challenges has been the 7 segment envelope generator. Thanks to some helpful tips from a user on the r/Synthesizers discord I have developed a graphical interface to display and edit the three EGs. I could not wrap my head around the values individually but seeing them laid out graphically makes it much easier to tweak in a way I can understand.
+
+<img src=https://raw.githubusercontent.com/hunked/lars/main/images/06.jpg width=300>
+
+I am not posting any of this in expectation that anyone will copy me - the code is a work in progress as I hack together ideas and clean things up. But if you are trying to make a controller for your XVA1 perhaps some of this could be of use to you!
+
+Take care!
+rm
