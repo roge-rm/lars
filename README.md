@@ -21,5 +21,5 @@ One of the more interesting challenges has been the 7 segment envelope generator
 
 I am not posting any of this in expectation that anyone will copy me - the code is a work in progress as I hack together ideas and clean things up. But if you are trying to make a controller for your XVA1 perhaps some of this could be of use to you!
 
-Take care!
+Take care! <br>
 rm
