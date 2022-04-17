@@ -32,7 +32,6 @@ void loadPatch() { // load patch from EEPROM
   Serial1.write('r');
   Serial1.write(patchNum);
   while (!Serial1.available()); //wait for it
-  //if (Serial1.read() == 0) Serial.println("Patch loaded");
   Serial1.read();
 
   loadDefaults();

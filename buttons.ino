@@ -52,47 +52,61 @@ void doEncButtons() { // encoder/button press handling
 }
 
 void doTopButtons() { // top row button handling
-  if (tbtn1.isClick()) { // switch between level and time edit when editing EG
+  if (tbtn1.isClick() || tbtn1.isHold()) { // load patch
+    if (checkModify()) {
+      changePatch();
+      delay(10);
+    }
+    if (presetType != 3) displayStatus(1);
+  }
+  else if (tbtn2.isClick()) { // switch between level and time edit when editing EG
     if (presetType == 3) {
       levelEG = !levelEG;
       doPreset = true;
     }
   }
-  else if (tbtn2.isClick()) { // bring up patch change selector
-    changePatch();
-
-    delay(10);
+  else if (tbtn2.hasClicks(3)) { // initialize patch
+    if (checkModify()) {
+      initPatch();
+      display.clearDisplay();
+      displayText(12);
+      delay(1000);
+    }
+    else display.clearDisplay();
     if (presetType != 3) displayStatus(1);
   }
-
-  else if (tbtn3.isClick()) {
+  else if (tbtn3.hasClicks(3)) {
+    if (changeMIDI()) displayText(13);
+    display.clearDisplay();
+    delay(100);
+    displayCentre("MIDI CHANNEL SET", 28);
+    display.display();
+    delay(900);
+    display.clearDisplay();
+    if (presetType != 3) displayStatus(0);
+    else displayADSR();
+    doPreset = true;
   }
-
-  else if (tbtn3.isHold()) { // load patch from EEPROM
-    loadPatch();
-    clearText(0);
-    displayText(10);
-    delay(1000);
-    if (presetType != 3) displayStatus(1);
-  }
-  else if (tbtn3.hasClicks(5)) { // initialize patch
-    initPatch();
-    displayText(12);
-    delay(1000);
-    if (presetType != 3) displayStatus(1);
-  }
-  else if (tbtn4.isHold()) { // save patch to EEPROM
+  /* else if (tbtn3.isHold()) { // reload patch from EEPROM - not needed as you can just hit the load patch button again
+      if (checkModify()) {
+        loadPatch();
+        display.clearDisplay();
+        clearText(0);
+        displayText(10);
+        delay(1000);
+      }
+      else display.clearDisplay();
+      if (presetType != 3) displayStatus(1);
+    } */
+  else if (tbtn4.isClick() || tbtn4.isHold()) { // save patch to EEPROM
     if (changeSave()) displayText(11);
     delay(1000);
+    display.clearDisplay();
     if (presetType != 3) displayStatus(0);
+    else displayADSR();
     doPreset = true;
   }
-  else if (tbtn4.hasClicks(3)) {
-    if (changeMIDI()) displayText(13);
-    delay(1000);
-    if (presetType != 3) displayStatus(0);
-    doPreset = true;
-  }
+
 
 }
 

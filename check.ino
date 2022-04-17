@@ -243,7 +243,7 @@ int checkValue(int pNum, int pVal) { // take parameter number and value as input
   return pVal;
 }
 
-int checkModify() {
+int checkModify() { // check if current patch has been modified and prompt to continue
   if (patchModify) {
     bool cont = false;
     display.clearDisplay();
@@ -254,12 +254,13 @@ int checkModify() {
     display.display();
     while (!cont) {
       encUpdate();
-      if (tbtn2.isClick() || enc1.isClick() || enc2.isClick() || enc3.isClick() || enc4.isClick()) {
+      if (tbtn1.isClick() || tbtn2.isClick() || tbtn3.isClick() || tbtn4.isClick() || enc1.isClick() || enc2.isClick() || enc3.isClick() || enc4.isClick()) { // click any top button or encoder to continue
         cont = true;
         return 1;
       }
-      else if (tbtn1.isClick() || tbtn3.isClick() || tbtn4.isClick()) {
+      else if (sbtn1.isClick() || sbtn2.isClick() || sbtn3.isClick() || sbtn4.isClick() || bbtn1.isClick() || bbtn2.isClick() || bbtn3.isClick() || bbtn4.isClick() || bbtn5.isClick() || bbtn6.isClick() || enc1.isLeft() || enc2.isLeft() || enc3.isLeft() || enc4.isLeft() || enc1.isRight() || enc2.isRight() || enc3.isRight() || enc4.isRight()) { // press any bottom button or turn any encoder to cancel
         cont = true;
+        display.clearDisplay();
         return 0;
       }
     }

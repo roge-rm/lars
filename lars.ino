@@ -99,7 +99,7 @@ void setup() {
     butState[i] = 0;
   }
 
-  Serial.begin(9600); // for monitoring purposes
+  //Serial.begin(9600); // for monitoring purposes
   Serial1.begin(500000); // connection to XVA1 requires 500kbps
 
   usbMIDI.setHandleProgramChange(midiProgramChange);
@@ -154,8 +154,6 @@ void midiNoteOn (byte channel, byte note, byte velocity) {
 void midiNoteOff (byte channel, byte note, byte velocity) {
 
 }
-
-// defaults
 
 void loadDefaults() {
   levelEG = true;

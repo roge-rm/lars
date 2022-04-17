@@ -45,18 +45,12 @@ void displayStatus(int i) {
       }
       break;
     case 5:
-      display.setCursor(70, 30);
-      display.print("   ");
-      display.setCursor(70, 30);
-      display.print(patchNum);
-      display.display();
+      displayCentre("   ", 28);
+      displayCentre(patchNum, 28);
       break;
     case 6:
-      display.setCursor(80, 28);
-      display.print("   ");
-      display.setCursor(80, 28);
-      display.print(midiPort);
-      display.display();
+      displayCentre("   ", 28);
+      displayCentre(midiPort, 28);
       break;
   }
 }
@@ -64,6 +58,8 @@ void displayStatus(int i) {
 void clearText(int textNum) {
   switch (textNum) {
     case 0:
+      display.setCursor(30, 18);
+      display.print("           ");
       display.setCursor(0, 28);
       display.print("                    ");
       break;
@@ -111,12 +107,10 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
 
   switch (textNum) {
     case 0: // patch heading, centre of screen
-      display.setCursor(35, 28);
-      display.print(F("Patch"));
+      displayCentre("PATCH", 18);
       break;
     case 1: // patch number
-      display.setCursor(70, 28);
-      display.print(patchNum);
+      displayCentre(patchNum, 28);
       break;
     case 2: // encoder 1 title, top left
     case 20:
@@ -160,18 +154,15 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
       break;
     case 10: // patch loaded
       clearText(0);
-      display.setCursor(18, 28);
-      display.print("Patch Loaded");
+      displayCentre("PATCH LOADED", 28);
       break;
     case 11: // patch saved
       clearText(0);
-      display.setCursor(18, 28);
-      display.print("Patch Saved");
+      displayCentre("PATCH SAVED", 28);
       break;
     case 12: // init patch
       clearText(0);
-      display.setCursor(20, 28);
-      display.print("Patch Init");
+      displayCentre("PATCH INIT", 28);
       break;
     case 13: // change MIDI channnel
       clearText(0);
@@ -225,11 +216,7 @@ void displayText(int textNum) { // display text in individual pieces to allow fo
       break;
     case 100:
       clearText(0);
-      int16_t x1, y1;
-      uint16_t w, h;
-      display.getTextBounds(menuName, 0, 0, &x1, &y1, &w, &h); // calculate width of menu heading
-      display.setCursor((128 - w)/2, 28); // centre heading
-      display.print(menuName);
+      displayCentre(menuName, 28);
       break;
   }
   display.display();
@@ -455,4 +442,13 @@ void startA() {
 void displayBit (int i) {
   if (bitValues[bitNum][bitLocation[i]]) display.print("ON ");
   else display.print("OFF");
+}
+
+void displayCentre(String text, int y) {
+  int16_t x1, y1;
+  uint16_t w, h;
+  display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h); // calculate width of menu heading
+  display.setCursor((128 - w) / 2, y); // centre heading
+  display.print(text);
+  display.display();
 }

@@ -3,8 +3,7 @@
 int changeMIDI() { // change what MIDI port the XVA1 responds to
   bool cont = false;
   display.clearDisplay();
-  display.setCursor(15, 28);
-  display.print("MIDI PORT: ");
+  displayCentre("MIDI PORT:",18);
   displayStatus(6);
   while (!cont) {
     encUpdate();
@@ -19,12 +18,12 @@ int changeMIDI() { // change what MIDI port the XVA1 responds to
       if (midiPort > 16) midiPort = 0;
       displayStatus(6);
     }
-    else if (tbtn4.isClick() || enc1.isClick() || enc2.isClick() || enc3.isClick() || enc4.isClick()) {
+    else if (enc1.isClick() || enc2.isClick() || enc3.isClick() || enc4.isClick()) {
       setMIDI(midiPort);
       cont = true;
       return 1;
     }
-    else if (tbtn1.isClick() || tbtn2.isClick() || tbtn3.isClick() || bbtn1.isClick() || bbtn2.isClick() || bbtn3.isClick() || bbtn4.isClick() || bbtn5.isClick() || bbtn6.isClick()) {
+    else if (tbtn1.isClick() || tbtn2.isClick() || tbtn3.isPress() || bbtn1.isClick() || bbtn2.isClick() || bbtn3.isClick() || bbtn4.isClick() || bbtn5.isClick() || bbtn6.isClick()) {
       cont = true;
       return 0;
     }
@@ -34,8 +33,8 @@ int changeMIDI() { // change what MIDI port the XVA1 responds to
 int changeSave() { // prompt for patch number to save to
   bool cont = false;
   display.clearDisplay();
-  display.setCursor(20, 30);
-  display.print("SAVE TO: ");
+  displayCentre("SAVE PATCH",8);
+  displayCentre("NUMBER:",18);
   displayStatus(5);
   while (!cont) {
     encUpdate();
@@ -68,7 +67,7 @@ void changePreset() {
   stateChange = true;
   if ((presetType == 0) && (presetNum[0] == 4 || presetNum[0] == 6)) bitEdit = 1;
   else bitEdit = 0;
-  
+
   switch (presetType) {
     case 0: // oscillators
       switch (presetNum[0]) {
@@ -1187,51 +1186,60 @@ void changeValue(int pNum, int pDir) { // inputs are parameter number and direct
 
 void changePatch() {
   int oldPatch = patchNum;
-  if (checkModify()) {
-    bool cont = false;
-    display.clearDisplay();
-    display.setCursor(30, 20);
-    display.print("PATCH NUMBER: ");
-    displayStatus(5);
-    while (!cont) {
-      encUpdate();
+  bool cont = false;
+  display.clearDisplay();
+  displayCentre("LOAD PATCH",8);
+  displayCentre("NUMBER:",18);
+  displayStatus(5);
 
-      if (enc1.isLeft() || enc2.isLeft() || enc3.isLeft() || enc4.isLeft()) { // turn any encoder to select patch to change to
-        patchNum--;
-        if (patchNum < 0) patchNum = 127;
-        displayStatus(5);
-      }
-      else if (enc1.isLeftH() || enc2.isLeftH() || enc3.isLeftH() || enc4.isLeftH()) { // if encoder is held, will load patch as it changes
-        patchNum--;
-        if (patchNum < 0) patchNum = 127;
-        displayStatus(5);
-        loadPatch();
-      }
-      else if (enc1.isRight() || enc2.isRight() || enc3.isRight() || enc4.isRight()) {
-        patchNum++;
-        if (patchNum > 127) patchNum = 0;
-        displayStatus(5);
-      }
-      else if (enc1.isRightH() || enc2.isRightH() || enc3.isRightH() || enc4.isRightH()) {
-        patchNum++;
-        if (patchNum < 0) patchNum = 127;
-        displayStatus(5);
-        loadPatch();
-      }
+  while (!cont) {
+    encUpdate();
 
-      else if (tbtn2.isClick() || enc1.isClick() || enc2.isClick() || enc3.isClick() || enc4.isClick()) { // otherwise button two or one of the encoders must be clicked to select patch
-        loadPatch();
-        display.clearDisplay();
-        clearText(0);
-        displayText(10);
-        cont = true;
-        patchModify = false;
-      }
+    if (enc1.isLeft() || enc2.isLeft() || enc3.isLeft() || enc4.isLeft()) { // turn any encoder to select patch to change to
+      patchNum--;
+      if (patchNum < 0) patchNum = 127;
+      displayStatus(5);
+    }
+    if (sbtn1.isClick() || sbtn3.isClick()) { // left screen buttons jump by 20
+      patchNum-=20;
+      if (patchNum < 0) patchNum = 127;
+      displayStatus(5);
+    }
+    else if (enc1.isLeftH() || enc2.isLeftH() || enc3.isLeftH() || enc4.isLeftH()) { // if encoder is held, will load patch as it changes
+      patchNum--;
+      if (patchNum < 0) patchNum = 127;
+      displayStatus(5);
+      loadPatch();
+    }
+    else if (enc1.isRight() || enc2.isRight() || enc3.isRight() || enc4.isRight()) {
+      patchNum++;
+      if (patchNum > 20) patchNum = 0;
+      displayStatus(5);
+    }
+    else if (sbtn2.isClick() || sbtn4.isClick()) { // right screen buttons jump by 20
+      patchNum+=25;
+      if (patchNum > 127) patchNum = 0;
+      displayStatus(5);
+    }
+    else if (enc1.isRightH() || enc2.isRightH() || enc3.isRightH() || enc4.isRightH()) {
+      patchNum++;
+      if (patchNum < 0) patchNum = 127;
+      displayStatus(5);
+      loadPatch();
+    }
 
-      else if (tbtn1.isClick() || tbtn2.isClick() || tbtn3.isClick() || bbtn1.isClick() || bbtn2.isClick() || bbtn3.isClick() || bbtn4.isClick() || bbtn5.isClick() || bbtn6.isClick()) { // any other top button or all bottom buttons will cancel selection
-        cont = true;
-        patchNum = oldPatch;
-      }
+    else if (tbtn2.isClick() || tbtn1.isClick() || tbtn2.isClick() || tbtn3.isClick() || enc1.isClick() || enc2.isClick() || enc3.isClick() || enc4.isClick()) { // top button or one of the encoders must be clicked to select patch
+      loadPatch();
+      display.clearDisplay();
+      clearText(0);
+      displayText(10);
+      cont = true;
+      patchModify = false;
+    }
+
+    else if (bbtn1.isClick() || bbtn2.isClick() || bbtn3.isClick() || bbtn4.isClick() || bbtn5.isClick() || bbtn6.isClick()) { // all bottom buttons will cancel selection
+      cont = true;
+      patchNum = oldPatch;
     }
   }
 
